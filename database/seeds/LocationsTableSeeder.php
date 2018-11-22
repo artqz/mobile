@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Database\Seeder;
 use App\Location;
@@ -19,14 +19,14 @@ class LocationsTableSeeder extends Seeder
             'y' => '10',
             'width' => '32',
             'height' => '32',
-            'background' => 'http://img.combats.ru/i/images/300x225/dream_central.jpg'
+            'background' => '/assets/cities/giran/giran_bg.jpg'
         ]);
         Location::create([
             'location_id' => 1,
             'name' => 'Shop',
             'name_ru' => 'Магазин',
             'model' => '/assets/cities/giran/shop.gif',
-            'background' => 'http://img.combats.com/i/images/300x225/vok_12_npc.jpg',
+            'background' => '/assets/cities/giran/giran_bg.jpg',
             'x' => '52',
             'y' => '20',
             'width' => '32',
