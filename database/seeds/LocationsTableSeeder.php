@@ -28,7 +28,7 @@ class LocationsTableSeeder extends Seeder
             'model' => '/assets/cities/giran/shop.gif',
             'background' => '/assets/cities/giran/giran_bg.jpg',
             'x' => '52',
-            'y' => '20',
+            'y' => '100',
             'width' => '32',
             'height' => '32'
         ]);
@@ -39,7 +39,7 @@ class LocationsTableSeeder extends Seeder
             'model' => '/assets/cities/giran/bank.gif',
             'background' => 'http://img.combats.ru/i/images/300x225/dream_middle_bank.jpg',
             'x' => '94',
-            'y' => '30',
+            'y' => '200',
             'width' => '32',
             'height' => '32'
         ]);
