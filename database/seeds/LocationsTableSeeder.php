@@ -15,18 +15,20 @@ class LocationsTableSeeder extends Seeder
         Location::create([
             'name' => 'Giran',
             'name_ru' => 'Жиран',
+            'type' => 'town',
             'x' => '10',
             'y' => '10',
             'width' => '32',
             'height' => '32',
-            'background' => '/assets/cities/giran/giran_bg.jpg'
+            'background' => '/giran/giran_bg.jpg'
         ]);
         Location::create([
             'location_id' => 1,
             'name' => 'Shop',
             'name_ru' => 'Магазин',
-            'model' => '/assets/cities/giran/shop.gif',
-            'background' => '/assets/cities/giran/giran_bg.jpg',
+            'type' => 'shop',
+            'model' => '/giran/shop.png',
+            'background' => '/giran/giran_bg.jpg',
             'x' => '52',
             'y' => '100',
             'width' => '32',
@@ -36,10 +38,11 @@ class LocationsTableSeeder extends Seeder
             'location_id' => 1,
             'name' => 'Bank',
             'name_ru' => 'Банк',
-            'model' => '/assets/cities/giran/bank.gif',
-            'background' => 'http://img.combats.ru/i/images/300x225/dream_middle_bank.jpg',
-            'x' => '94',
-            'y' => '200',
+            'type' => 'bank',
+            'model' => '/giran/bank.png',
+            'background' => '/giran/giran_bg.jpg',
+            'x' => '250',
+            'y' => '150',
             'width' => '32',
             'height' => '32'
         ]);
@@ -47,8 +50,9 @@ class LocationsTableSeeder extends Seeder
             'location_id' => 1,
             'name' => 'Arena',
             'name_ru' => 'Арена',
-            'model' => '/assets/cities/giran/arena.gif',
-            'background' => 'http://img.combats.ru/i/images/300x225/dream/warriors_hall.jpg',
+            'type' => 'arena',
+            'model' => '/giran/arena.png',
+            'background' => '/giran/giran_bg.jpg',
             'x' => '136',
             'y' => '40',
             'width' => '32',

@@ -18,6 +18,7 @@ class CreateLocationsTable extends Migration
             $table->integer('location_id')->references('id')->on('locations')->nullable();            
             $table->string('name');
             $table->string('name_ru');
+            $table->string('type')->nullable();
             $table->string('model')->nullable();
             $table->string('background')->nullable();
             $table->integer('x');
