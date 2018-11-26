@@ -15,8 +15,7 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('itemable_id');
-            $table->string('itemable_type');
+            $table->morphs('itemable');
             $table->integer('user_id')->references('id')->on('users')->nullable();
             $table->timestamps();
         });

@@ -11,6 +11,10 @@ class Weapon extends Model
     ];
     public function items()
     {
-        return $this->MorphOne('App\Item', 'itemable');
+        return $this->morphMany('App\Item', 'itemable');
+    }
+    public function shops()
+    {
+        return $this->morphMany('App\ShopList', 'itemable');
     }
 }
