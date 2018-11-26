@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\ServiceProvider;
 use \Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191); //Solved by increasing StringLength
         Resource::withoutWrapping();
+
+        Relation::morphMap([
+            'weapon' => 'App\Weapon',
+        ]);
     }
 
     /**
