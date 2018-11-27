@@ -37,9 +37,10 @@ class ShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+     //необходимо сделать новый роут
     public function show($id)
     {
-      $shop = Shop::findOrFail($id);
+      $shop = Shop::where('location_id', $id)->first();
       return new ShopResource($shop);
     }
 
