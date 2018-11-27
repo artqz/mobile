@@ -21,3 +21,4 @@ Route::apiResources(['chat' => 'API\ChatController']);
 Route::apiResources(['users' => 'API\UserController']);
 Route::apiResources(['locations' => 'API\LocationController']);
 Route::apiResources(['shops' => 'API\ShopController']);
+Route::get('shops/location/{id}', 'API\ShopController@location');
