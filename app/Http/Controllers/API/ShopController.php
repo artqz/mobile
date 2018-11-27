@@ -39,7 +39,8 @@ class ShopController extends Controller
      */
     public function show($id)
     {
-        //
+      $shop = Shop::findOrFail($id);
+      return new ShopResource($shop);
     }
 
     /**
