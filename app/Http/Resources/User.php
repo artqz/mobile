@@ -21,21 +21,8 @@ class User extends JsonResource
             'level' => $this->level,
             'inventory_size' => $this->inventory_size,
             'gold' => $this->gold,
-            'slot_weapon' => $this->slot_weapon,
-            'slot_sub_weapon' => $this->slot_sub_weapon,
-            'slot_helmet' => $this->slot_helme,
-            'slot_armor' => $this->slot_armor,
-            'slot_belt' => $this->slot_belt,
-            'slot_pants' => $this->lot_pants,
-            'slot_gloves' => $this->slot_gloves,
-            'slot_shoes' => $this->slot_shoes,
-            'slot_earring_one' => $this->slot_earring_one,
-            'slot_earring_two' => $this->slot_earring_two,
-            'slot_ring_one' => $this->slot_ring_one,
-            'slot_ring_two' => $this->slot_ring_two,
-            'slot_necklace' => $this->slot_necklace,
-            'slot_bag' => $this->slot_bag,
             'location_id' => $this->location_id,
+            'items' => Item::collection($this->items)
         ];
     }
 }
