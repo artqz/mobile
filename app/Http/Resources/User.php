@@ -19,6 +19,8 @@ class User extends JsonResource
             'name' => $this->name,
             'avatar' => $this->avatar,
             'level' => $this->level,
+            'inventory_size' => $this->inventory_size,
+            'gold' => $this->gold,
             'slot_weapon' => $this->slot_weapon,
             'slot_sub_weapon' => $this->slot_sub_weapon,
             'slot_helmet' => $this->slot_helme,

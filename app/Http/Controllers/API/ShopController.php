@@ -37,7 +37,7 @@ class ShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
     public function location($id)
     {
         $shop = Shop::where('location_id', $id)->first();

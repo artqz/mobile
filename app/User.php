@@ -46,4 +46,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Location');
     }
+    public function items()
+    {
+        return $this->hasMany('App\Item');
+    }
 }

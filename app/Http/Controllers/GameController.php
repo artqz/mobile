@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Shop;
 use App\ShopList;
 use App\Weapon;
+use App\User;
+use App\Item;
 use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\Auth;
 use App\Location;
@@ -20,8 +22,8 @@ class GameController extends Controller
         // $weapon->save();
         // //dd($weapon);
         //     $item = new Item;
-        $shop = Shop::find(1);
+        $user = User::find(1);
         // $weapon->items()->save($item);
-        dd($shop->items[0]->itemable);
+        dd($user->items->count());
     }
 }

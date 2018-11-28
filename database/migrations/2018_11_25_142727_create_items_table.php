@@ -17,6 +17,7 @@ class CreateItemsTable extends Migration
             $table->increments('id');
             $table->morphs('itemable');
             $table->integer('user_id')->references('id')->on('users')->nullable();
+            $table->integer('is_used')->default(0);
             $table->timestamps();
         });
     }

@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('inventory_size')->default(10);
             $table->integer('level')->default(1);
+            $table->integer('gold')->default(10);
             //Stats
             $table->integer('strength')->default(1);
             $table->integer('dexterity')->default(1);
@@ -47,7 +48,7 @@ class CreateUsersTable extends Migration
             $table->integer('count_wins')->default(0);
             $table->integer('count_loses')->default(0);
             $table->integer('user_ref_id')->references('id')->on('users')->default(0);
-            $table->rememberToken();            
+            $table->rememberToken();
             $table->timestamps();
         });
     }
