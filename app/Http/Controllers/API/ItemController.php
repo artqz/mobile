@@ -21,6 +21,7 @@ class ItemController extends Controller
          $user_id = $request->input('user_id');
          $user = User::findOrFail($user_id);
          $user_count_items = $user->items->count();
+         $user_gold = $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first();
          $item_price_gold = $request->item['price'];
 
          //Проверка на заполненность
@@ -31,12 +32,14 @@ class ItemController extends Controller
            $item->user_id = $user_id;
 
            //Проверка на достаточное количество денег
-           if($user->gold >= $item_price_gold) {
+           if($user_gold->count >= $item_price_gold) {
              //Вычитаем цену вещи из кошелька
-             $user->decrement('gold', $item_price_gold);
-             if($item->save()) {
-                 return new ItemResource($item);
-             }
+
+               $user_gold->decrement('count', $item_price_gold);
+               if($user_gold->count <= 0) $user_gold->delete();
+               if($item->save()) {
+                   return new ItemResource($item);
+               }
            }
          }
      }

@@ -24,6 +24,8 @@ class GameController extends Controller
         //     $item = new Item;
         $user = User::find(1);
         // $weapon->items()->save($item);
-        dd($user->items->first());
+        $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first()->decrement('count', 1);
+        
+        dd($user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first()->count);
     }
 }
