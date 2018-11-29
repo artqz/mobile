@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Etc;
+use App\Item;
 
 class EtcsTableSeeder extends Seeder
 {
@@ -12,12 +13,14 @@ class EtcsTableSeeder extends Seeder
      */
     public function run()
     {
-      $items = [
+      $etcItems = [
           ['name' => 'Gold', 'name_ru' => 'Золото', 'icon' => '/etc/gold.png'],
       ];
-
-      foreach($items as $item){
-        Etc::create($item);
+      $item = new Item;
+      $item->user_id = 1;
+      $item->count = 5;
+      foreach($etcItems as $etcItem){
+        Etc::create($etcItem)->items()->save($item);
       }
     }
 }

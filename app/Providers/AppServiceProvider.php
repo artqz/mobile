@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
 
         Relation::morphMap([
             'weapon' => 'App\Weapon',
+            'etc' => 'App\Etc',
         ]);
     }
 
