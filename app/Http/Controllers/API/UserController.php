@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\User;
+use App\Item;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User as UserResource;
@@ -60,6 +61,28 @@ class UserController extends Controller
                 return new UserResource($user);
             }
         }
+    }
+    public function equip_item(Request $request)
+    {
+      $select_item = $request->item;
+
+      if ($select_item['itemable_type'] == 'weapon') {
+        $slot = 'main_hand';
+        $remove_item = Item::where('slot', $slot)->first();
+
+        if (isset($remove_item)) {
+          $remove_item->slot = null;
+          $remove_item->save();
+        }
+        $eqip_item = Item::findOrFail($select_item['id']);
+        $eqip_item->slot = $slot;
+        $eqip_item->save();
+        return $eqip_item;
+      }
+      else {
+        return 'govho';
+      }
+
     }
 
     /**

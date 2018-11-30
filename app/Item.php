@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     protected $fillable = [
-        'itemable_type', 'itemable_id', 'user_id', 'is_used'
+        'itemable_type', 'itemable_id', 'user_id', 'is_used', 'slot'
     ];
     public function gold()
     {

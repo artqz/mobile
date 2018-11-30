@@ -17,13 +17,14 @@ class Item extends JsonResource
         //return parent::toArray($request);
         if ($this->itemable_type == 'weapon') {
             return [
-                'id' => $this->itemable->id,
+                'id' => $this->id,
                 'name' => $this->itemable->name,
                 'name_ru' => $this->itemable->name_ru,
                 'itemable_type' => $this->itemable_type,
                 'itemable_id' => $this->itemable_id,
                 'icon' => $this->itemable->icon,
                 'p_atk' => $this->itemable->p_atk,
+                'slot' => $this->slot,
                 'price' => $this->price
             ];
         }

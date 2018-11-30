@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResources(['chat' => 'API\ChatController']);
 Route::apiResources(['users' => 'API\UserController']);
+  Route::post('users/equip_item', 'API\UserController@equip_item');
 Route::apiResources(['locations' => 'API\LocationController']);
 Route::apiResources(['shops' => 'API\ShopController']);
   Route::get('shops/location/{id}', 'API\ShopController@location');

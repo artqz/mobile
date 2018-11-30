@@ -19,6 +19,7 @@ class CreateItemsTable extends Migration
             $table->integer('user_id')->references('id')->on('users')->nullable();
             $table->integer('is_used')->default(0);
             $table->integer('count')->default(0);
+            $table->string('slot')->nullable();
             $table->timestamps();
         });
     }
