@@ -19,9 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('inventory_size')->default(10);
+            $table->integer('inventory_size')->default(12);
             $table->integer('level')->default(1);
-            $table->integer('gold')->default(10);
+            $table->integer('gold')->default(2);
             //Stats
             $table->integer('strength')->default(1);
             $table->integer('dexterity')->default(1);
