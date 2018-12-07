@@ -23,7 +23,8 @@ class GameController extends Controller
         // $weapon->save();
         // //dd($weapon);
         //     $item = new Item;
-        $chat = Chat::find(1);
-        dd($chat->user);
+        $chat = User::where('id', 1)->update([]);
+        //$chat->updated_at = Now();
+        dd($chat);
     }
 }

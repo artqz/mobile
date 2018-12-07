@@ -17,7 +17,8 @@ class Chat extends JsonResource
         return [
             'id' => $this->id,
             'text' => $this->text,
-            'user' => $this->user
+            'user' => $this->user,
+            'date' => $this->created_at->format('h:m')
         ];
     }
 }
