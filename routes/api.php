@@ -16,8 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::apiResources(['chat' => 'API\ChatController']);
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::apiResources(['chat' => 'API\ChatController']);
+});
 Route::apiResources(['users' => 'API\UserController']);
   Route::post('users/equip_item', 'API\UserController@equip_item');
 Route::apiResources(['locations' => 'API\LocationController']);

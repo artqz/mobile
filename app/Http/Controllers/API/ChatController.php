@@ -28,9 +28,9 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        $message = $request->isMethod('put') ? Chat::findOrFail($request->task_id) : new Chat;
-
-        $message->text = $request->input('text');
+        $message = new Chat;
+        $message->user_id = $request->user()->id;
+        $message->text = $request->input('message');
 
         if($message->save()) {
             return new ChatResource($message);

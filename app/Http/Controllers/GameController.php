@@ -7,6 +7,7 @@ use App\ShopList;
 use App\Weapon;
 use App\User;
 use App\Item;
+use App\Chat;
 use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\Auth;
 use App\Location;
@@ -22,10 +23,7 @@ class GameController extends Controller
         // $weapon->save();
         // //dd($weapon);
         //     $item = new Item;
-        $user = User::find(1);
-        // $weapon->items()->save($item);
-        $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first()->decrement('count', 1);
-        
-        dd($user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first()->count);
+        $chat = Chat::find(1);
+        dd($chat->user);
     }
 }
