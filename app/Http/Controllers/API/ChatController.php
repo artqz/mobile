@@ -16,10 +16,15 @@ class ChatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $chat = Chat::orderBy('created_at', 'asc')->latest()->get();
-        return ChatResource::collection($chat);
+        $messages_count = Chat::count();
+        $messages = Chat::orderBy('created_at', 'ASC')
+            ->offset($messages_count-30)
+            ->limit(30)
+            ->get();
+        User::where('id', $request->user()->id)->update([]);
+        return ChatResource::collection($messages);
     }
 
     public function users_online()
@@ -39,7 +44,6 @@ class ChatController extends Controller
         $message = new Chat;
         $message->user_id = $request->user()->id;
         $message->text = $request->input('message');
-        User::where('id', $request->user()->id)->update([]);
         if($message->save()) {
             return new ChatResource($message);
         }

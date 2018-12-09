@@ -26,21 +26,8 @@ class CreateUsersTable extends Migration
             $table->integer('strength')->default(1);
             $table->integer('dexterity')->default(1);
             $table->integer('constitution')->default(1);
-            //Slots
-            $table->integer('slot_weapon')->nullable();
-            $table->integer('slot_sub_weapon')->nullable();
-            $table->integer('slot_helmet')->nullable();
-            $table->integer('slot_armor')->nullable();
-            $table->integer('slot_belt')->nullable();
-            $table->integer('slot_pants')->nullable();
-            $table->integer('slot_gloves')->nullable();
-            $table->integer('slot_shoes')->nullable();
-            $table->integer('slot_earring_one')->nullable();
-            $table->integer('slot_earring_two')->nullable();
-            $table->integer('slot_ring_one')->nullable();
-            $table->integer('slot_ring_two')->nullable();
-            $table->integer('slot_necklace')->nullable();
-            $table->integer('slot_bag')->nullable();
+            $table->integer('hp_max')->default(60);
+            $table->integer('hp_current')->default(60);
             //
             $table->string('avatar')->default('default.png');
             $table->integer('sex')->default(0);
