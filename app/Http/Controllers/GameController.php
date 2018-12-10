@@ -11,6 +11,7 @@ use App\Chat;
 use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\Auth;
 use App\Location;
+use Carbon\Carbon;
 
 class GameController extends Controller
 {
@@ -23,8 +24,19 @@ class GameController extends Controller
         // $weapon->save();
         // //dd($weapon);
         //     $item = new Item;
-        $chat = User::where('id', 1)->update([]);
-        //$chat->updated_at = Now();
-        dd($chat);
+        $users = User::whereColumn('hp_max', '>', 'hp_current')->get();
+        foreach ($users as $key => $user) {
+          $user = User::where('id', $user->id)->first();
+          $hp_max = $user->hp_max;
+          $hp_current = $user->hp_current;
+          $hp_regen = 5;
+          if($hp_max - $hp_current < $hp_regen)
+          {
+            $hp_regen = $user->hp_max - $user->hp_current;
+          }
+          $user->increment('hp_current', $hp_regen);
+          $user->save();
+        }
+          dd($users);
     }
 }

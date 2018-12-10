@@ -23,13 +23,13 @@ class ChatController extends Controller
             ->offset($messages_count-30)
             ->limit(30)
             ->get();
-        User::where('id', $request->user()->id)->update([]);
+        User::where('id', $request->user()->id)->update(['active_at' => \Carbon\Carbon::now()]);
         return ChatResource::collection($messages);
     }
 
     public function users_online()
     {
-        $users = User::where('updated_at', '>', \Carbon\Carbon::now()->subSeconds(60))->get();
+        $users = User::where('active_at', '>', \Carbon\Carbon::now()->subSeconds(60))->get();
         return UserResource::collection($users);
     }
 

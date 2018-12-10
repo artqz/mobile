@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\User;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+      //
     ];
 
     /**
@@ -24,8 +25,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+      $schedule->call(function () {
+        $users = User::whereColumn('hp_max', '>', 'hp_current')->get();
+        foreach ($users as $key => $user) {
+          $user = User::where('id', $user->id)->first();
+          $hp_max = $user->hp_max;
+          $hp_current = $user->hp_current;
+          $hp_regen = $user->hp_regen;
+          if($hp_max - $hp_current < $hp_regen)
+          {
+            $hp_regen = $user->hp_max - $user->hp_current;
+          }
+          $user->increment('hp_current', $hp_regen);
+          $user->save();
+        }
+      });
     }
 
     /**

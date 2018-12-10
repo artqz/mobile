@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
 class Chat extends JsonResource
 {
@@ -18,7 +19,7 @@ class Chat extends JsonResource
             'id' => $this->id,
             'text' => $this->text,
             'user' => $this->user,
-            'date' => $this->created_at->format('h:m')
+            'date' => Carbon::parse($this->created_at)->toW3cString()
         ];
     }
 }
