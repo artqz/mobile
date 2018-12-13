@@ -22,6 +22,7 @@ class User extends JsonResource
             'inventory_size' => $this->inventory_size,
             'gold' => $this->gold,
             'location_id' => $this->location_id,
+            'in_battle' => $this->in_battle,
             'items' => Item::collection($this->items)
         ];
     }

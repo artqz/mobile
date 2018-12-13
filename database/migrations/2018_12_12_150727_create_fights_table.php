@@ -16,7 +16,9 @@ class CreateFightsTable extends Migration
         Schema::create('fights', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->references('id')->on('users');
-            $table->dateTime('started_at')->default(Now());
+            $table->integer('enemy_id')->references('id')->on('users')->nullable();
+            $table->string('status')->default('open');
+            $table->dateTime('started_at')->nullable();
             $table->timestamps();
         });
     }

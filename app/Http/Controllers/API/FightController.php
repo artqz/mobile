@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Fight;
+use App\User;
 use App\Http\Resources\Fight as FightResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class FightController extends Controller
      */
     public function index()
     {
-        $fights = Fight::get();
+        $fights = Fight::where('status', 'open')->get();
         return FightResource::collection($fights);
     }
 
@@ -29,7 +30,17 @@ class FightController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      // Проверяем имеются ли у пользователя заявки на бой
+      $exists_fight = Fight::where('user_id', $request->user()->id)->where('status', 'open')->first();
+      if(!$exists_fight) {
+        //Если нет, то создаем бой
+        $fight = new Fight;
+        $fight->user_id = $request->user()->id;
+        $fight->started_at = Now();
+        if($fight->save()) {
+            return new FightResource($fight);
+        }
+      }
     }
 
     /**
@@ -40,7 +51,8 @@ class FightController extends Controller
      */
     public function show($id)
     {
-        //
+        //$fight = Fight::where('id', $id)->where('status', 'battle')->first();
+
     }
 
     /**
@@ -52,7 +64,23 @@ class FightController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $fight = Fight::where('id', $id)->where('status', 'open')->first();
+        $fight->enemy_id = $request->user()->id;
+        $fight->status = 'battle';
+        $user = User::where('id', $fight->user_id)->first();
+        $user->in_battle = true;
+        $enemy = User::where('id', $fight->enemy_id)->first();
+        $enemy->in_battle = true;
+        if($fight->save() && $user->save() && $enemy->save()) {
+            return new FightResource($fight);
+        }
+    }
+
+    public function current(Request $request)
+    {
+      $user_id = $request->user()->id;
+      $fight = Fight::where('user_id', $user_id)->orWhere('enemy_id', $user_id)->where('status', 'battle')->first();
+      return new FightResource($fight);
     }
 
     /**

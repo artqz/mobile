@@ -19,8 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('chat/users_online', 'API\ChatController@users_online');
     Route::apiResources(['chat' => 'API\ChatController']);
+    Route::get('fights/current', 'API\FightController@current');
+    Route::apiResources(['fights' => 'API\FightController']);
 });
-Route::apiResources(['fights' => 'API\FightController']);
 Route::apiResources(['users' => 'API\UserController']);
   Route::post('users/equip_item', 'API\UserController@equip_item');
 Route::apiResources(['locations' => 'API\LocationController']);
