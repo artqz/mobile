@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Fight;
+use App\FightChronology;
 use App\User;
 use App\Http\Resources\Fight as FightResource;
 use Illuminate\Http\Request;
@@ -80,6 +81,53 @@ class FightController extends Controller
     {
       $user_id = $request->user()->id;
       $fight = Fight::where('user_id', $user_id)->orWhere('enemy_id', $user_id)->where('status', 'battle')->first();
+      return new FightResource($fight);
+    }
+
+    public function attack(Request $request)
+    {
+      $user_id = $request->user()->id;
+      $fight = Fight::where('status', 'battle')->where('user_id', $user_id)->orWhere('enemy_id', $user_id)->first();
+      $chronology = FightChronology::where('fight_id', $fight->id)->get();
+      
+      if ($fight->user_id == $user_id) {
+        $target_type = 'enemy_id';
+        $target_id = $fight->enemy_id;
+      }
+      else {
+        $target_type = 'user_id';
+        $target_id = $fight->user_id;
+      }
+      $user = User::where('id', $user_id)->first();
+      $target = User::where('id', $target_id)->first();
+
+      $random = random_int(1, 2);
+      if($random == 2) {
+        $crit = 2;
+      }
+      else $crit = 1;
+      $damage = $user->strength * 10 * $crit;
+
+      if($target->hp_current - $damage <= 0)
+      {
+          $target->hp_current = 0;
+          if($target->save())
+          {
+            $user->in_battle = false;
+            $user->increment('count_wins', 1);
+            $user->save();
+            $target->in_battle = false;
+            $target->increment('count_loses', 1);
+            $target->save();
+            $fight->status = 'completed';
+            $fight->save();
+          }
+      }
+      else {
+          $target->decrement('hp_current', $damage);
+          $target->save();
+      }
+
       return new FightResource($fight);
     }
 

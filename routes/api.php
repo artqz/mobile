@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('chat/users_online', 'API\ChatController@users_online');
     Route::apiResources(['chat' => 'API\ChatController']);
     Route::get('fights/current', 'API\FightController@current');
+    Route::post('fights/attack', 'API\FightController@attack');
     Route::apiResources(['fights' => 'API\FightController']);
 });
 Route::apiResources(['users' => 'API\UserController']);

@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
       $schedule->call(function () {
-        $users = User::whereColumn('hp_max', '>', 'hp_current')->get();
+        $users = User::where('in_battle', false)->whereColumn('hp_max', '>', 'hp_current')->get();
         foreach ($users as $key => $user) {
           $user = User::where('id', $user->id)->first();
           $hp_max = $user->hp_max;
