@@ -87,45 +87,78 @@ class FightController extends Controller
     public function attack(Request $request)
     {
       $user_id = $request->user()->id;
-      $fight = Fight::where('status', 'battle')->where('user_id', $user_id)->orWhere('enemy_id', $user_id)->first();
-      $chronology = FightChronology::where('fight_id', $fight->id)->get();
-      
-      if ($fight->user_id == $user_id) {
-        $target_type = 'enemy_id';
-        $target_id = $fight->enemy_id;
-      }
-      else {
-        $target_type = 'user_id';
-        $target_id = $fight->user_id;
-      }
-      $user = User::where('id', $user_id)->first();
-      $target = User::where('id', $target_id)->first();
+      //Участвует ли юзер в бою?
+      $fight = Fight::where('status', 'battle')->where('user_id', $user_id)->orWhere('status', 'battle')->where('enemy_id', $user_id)->first();
+      if($fight) {
+        if ($fight->user_id == $user_id) {
+          $target_type = 'enemy_id';
+          $target_id = $fight->enemy_id;
+        }
+        else {
+          $target_type = 'user_id';
+          $target_id = $fight->user_id;
+        }
+        $user = User::where('id', $user_id)->first();
+        $target = User::where('id', $target_id)->first();
+        //Проверяем количество ходов юзера
+        $user_chronologies_count = FightChronology::where('fight_id', $fight->id)->where('user_id', $user_id )->count();
+        //Проверяем делал ли ход враг
+        $target_chronologies = FightChronology::where('fight_id', $fight->id)->where('user_id', $target_id )->count();
+        //Проверяем общее количество ходов за раунд
+        $round_chronologies_count = FightChronology::where('fight_id', $fight->id)->where('round', $user_chronologies_count);
+        dd($round_chronologies_count->where('user_id', $user_id)->count())
+        $random = random_int(1, 2);
+        if($random == 2) {
+          $crit = 2;
+        }
+        else $crit = 1;
+        $damage = $user->strength * 1 * $crit;
 
-      $random = random_int(1, 2);
-      if($random == 2) {
-        $crit = 2;
-      }
-      else $crit = 1;
-      $damage = $user->strength * 10 * $crit;
+        if($round_chronologies_count < 1)
+        {
 
-      if($target->hp_current - $damage <= 0)
-      {
-          $target->hp_current = 0;
-          if($target->save())
-          {
-            $user->in_battle = false;
-            $user->increment('count_wins', 1);
-            $user->save();
-            $target->in_battle = false;
-            $target->increment('count_loses', 1);
+        if($target->hp_current - $damage <= 0)
+        {
+            $target->hp_current = 0;
+            if($target->save())
+            {
+              $user->in_battle = false;
+              $user->increment('count_wins', 1);
+              $user->save();
+              $target->in_battle = false;
+              $target->increment('count_loses', 1);
+              $target->save();
+              $fight->status = 'completed';
+              $fight->save();
+
+              //Запрещаем делать более одного хода
+
+              $chronology = new FightChronology;
+              $chronology->round = $user_chronologies_count + 1;
+              $chronology->fight_id = $fight->id;
+              $chronology->user_id = $user_id;
+              $chronology->target_id = $target_id;
+              $chronology->damage = $damage;
+              $chronology->text = 'Убил ...';
+              $chronology->save();
+            }
+        }
+        else {
+            $target->decrement('hp_current', $damage);
             $target->save();
-            $fight->status = 'completed';
-            $fight->save();
-          }
-      }
-      else {
-          $target->decrement('hp_current', $damage);
-          $target->save();
+
+            $chronology = new FightChronology;
+            $chronology->round = $user_chronologies_count + 1;
+            $chronology->fight_id = $fight->id;
+            $chronology->user_id = $user_id;
+            $chronology->target_id = $target_id;
+            $chronology->damage = $damage;
+            $chronology->text = 'Ударил ....';
+            $chronology->save();
+        }
+        //return dd('можешь бить!');
+        }
+        else return dd('ты уже ударил!');
       }
 
       return new FightResource($fight);

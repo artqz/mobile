@@ -18,6 +18,7 @@ class CreateFightsTable extends Migration
             $table->integer('user_id')->references('id')->on('users');
             $table->integer('enemy_id')->references('id')->on('users')->nullable();
             $table->string('status')->default('open');
+            $table->integer('round')->nullable();
             $table->dateTime('started_at')->nullable();
             $table->timestamps();
         });
