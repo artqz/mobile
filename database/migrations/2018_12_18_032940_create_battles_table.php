@@ -18,7 +18,7 @@ class CreateBattlesTable extends Migration
           $table->integer('user_id_1')->references('id')->on('users');
           $table->integer('user_id_2')->references('id')->on('users')->nullable();
           $table->integer('status')->default(0);
-          $table->integer('round')->nullable();
+          $table->integer('round')->default(1);
           $table->dateTime('started_at')->nullable();
           $table->timestamps();
         });

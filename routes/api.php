@@ -22,6 +22,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('fights/current', 'API\FightController@current');
     Route::post('fights/attack', 'API\FightController@attack');
     Route::apiResources(['fights' => 'API\FightController']);
+    Route::get('battles/current', 'API\BattleController@current');
+    Route::post('battles/attack', 'API\BattleController@attack');
+    Route::apiResources(['battles' => 'API\BattleController']);
 });
 Route::apiResources(['users' => 'API\UserController']);
   Route::post('users/equip_item', 'API\UserController@equip_item');
