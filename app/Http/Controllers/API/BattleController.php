@@ -36,22 +36,23 @@ class BattleController extends Controller
         ->where('user_id_2', $user_id)
         ->first();
 
-      if ($battle->user_id_1 == $user_id) $user = $battle->user1;
-      else $user = $battle->user2;
+      if($battle) {
+        if ($battle->user_id_1 == $user_id) $user = $battle->user1;
+        else $user = $battle->user2;
 
-      $user_last_round = $battle
-        ->rounds
-        ->where('round', $battle->round)
-        ->where('user_id_1', $user->id);
+        $user_last_round = $battle
+          ->rounds
+          ->where('round', $battle->round)
+          ->where('user_id_1', $user->id);
 
-      if ($user_last_round->count() < 1) {
-        $data = ['attack' => true];
-        return response()->json($data);
+        if ($user_last_round->count() < 1) {
+          return new BattleResource($battle);
+        }
+        else {
+          return null;
+        }
       }
-      else {
-        $data = ['attack' => false];
-        return response()->json($data);
-      }
+      else return null;
     }
 
     public function attack (Request $request) {
