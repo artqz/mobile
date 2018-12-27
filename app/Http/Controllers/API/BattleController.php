@@ -108,6 +108,7 @@ class BattleController extends Controller
               $target->save();
 
               $user->in_battle = false;
+              $user->decrement('hp_current', $target_last_round->first()->damage);
               $user->increment('count_wins', 1);
               $user->save();
 
@@ -121,6 +122,7 @@ class BattleController extends Controller
               $user->save();
 
               $target->in_battle = false;
+              $target->decrement('hp_current', $user_damage);
               $target->increment('count_wins', 1);
               $target->save();
 
