@@ -19,6 +19,7 @@ class Battle extends JsonResource
           'id' => $this->id,
           'user1' => $this->user1,
           'user2' => $this->user2,
+          'rounds' => $this->rounds,
           'date' => Carbon::parse($this->started_at)->toW3cString()
       ];
     }
