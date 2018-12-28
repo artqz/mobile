@@ -18,7 +18,9 @@ class Chat extends JsonResource
         return [
             'id' => $this->id,
             'text' => $this->text,
-            'user' => $this->user,
+            'sender' => $this->sender,
+            'receiver' => $this->receiver,
+            'is_system' => $this->is_system,
             'date' => Carbon::parse($this->created_at)->toW3cString()
         ];
     }

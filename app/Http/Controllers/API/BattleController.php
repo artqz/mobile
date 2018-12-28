@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Battle;
 use App\Round;
+use App\Message;
 use App\Http\Resources\Battle as BattleResource;
 
 class BattleController extends Controller
@@ -112,8 +113,36 @@ class BattleController extends Controller
               $user->increment('count_wins', 1);
               $user->save();
 
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $target->id;
+              $message->is_system = true;
+              $message->text ='Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $target->id;
+              $message->is_system = true;
+              $message->text = $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $user->id;
+              $message->is_system = true;
+              $message->text = $target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $user->id;
+              $message->is_system = true;
+              $message->text ='Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
+              $message->save();
+
               $battle->status = 3;
-              $battle->save();
+              return $battle->save();
             }
             elseif ($user->hp_current - $target_last_round->first()->damage <=0) {
               $user->hp_current = 0;
@@ -126,18 +155,76 @@ class BattleController extends Controller
               $target->increment('count_wins', 1);
               $target->save();
 
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $target->id;
+              $message->is_system = true;
+              $message->text ='Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $target->id;
+              $message->is_system = true;
+              $message->text = $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $user->id;
+              $message->is_system = true;
+              $message->text = $target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $user->id;
+              $message->is_system = true;
+              $message->text ='Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
+              $message->save();
+
               $battle->status = 3;
-              $battle->save();
+              return $battle->save();
             }
             else {
               $target->decrement('hp_current', $user_damage);
               $target->save();
 
+
               $user->decrement('hp_current', $target_last_round->first()->damage);
               $user->save();
 
+              //message damage
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $target->id;
+              $message->is_system = true;
+              $message->text ='Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $target->id;
+              $message->is_system = true;
+              $message->text = $user->name . ' нанес Вам ' . $user_damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $user->id;
+              $message->is_system = true;
+              $message->text = $target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->save();
+
+              $message = new Message;
+              $message->sender_id = 0;
+              $message->receiver_id = $user->id;
+              $message->is_system = true;
+              $message->text ='Вы нанесли '. $target->name . ' ' . $user_damage . ' ед. урона.';
+              $message->save();
+
               $battle->increment('round', 1);
-              $battle->save();
+              return $battle->save();
             }
           }
           else {

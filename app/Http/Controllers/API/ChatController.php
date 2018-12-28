@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Chat;
+use App\Message;
 use App\Http\Resources\Chat as ChatResource;
 use App\Http\Resources\User as UserResource;
 
@@ -18,8 +18,13 @@ class ChatController extends Controller
      */
     public function index(Request $request)
     {
-        $messages_count = Chat::count();
-        $messages = Chat::orderBy('created_at', 'ASC')
+        $user_id = $request->user()->id;
+        $messages_count = Message::where('receiver_id', $user_id)
+            ->orWhere('receiver_id', 0)
+            ->count();
+        $messages = Message::orderBy('created_at', 'ASC')
+            ->where('receiver_id', $user_id)
+            ->orWhere('receiver_id', 0)
             ->offset($messages_count-30)
             ->limit(30)
             ->get();
@@ -41,8 +46,8 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        $message = new Chat;
-        $message->user_id = $request->user()->id;
+        $message = new Message;
+        $message->sender_id = $request->user()->id;
         $message->text = $request->input('message');
         if($message->save()) {
             return new ChatResource($message);
