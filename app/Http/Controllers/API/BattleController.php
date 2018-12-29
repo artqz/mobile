@@ -117,28 +117,28 @@ class BattleController extends Controller
               $message->sender_id = 0;
               $message->receiver_id = $target->id;
               $message->is_system = true;
-              $message->text ='Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->text = '[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $target->id;
               $message->is_system = true;
-              $message->text = $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
+              $message->text = '[Раунд: '.$round->round.'] ' . $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $user->id;
               $message->is_system = true;
-              $message->text = $target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->text = '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $user->id;
               $message->is_system = true;
-              $message->text ='Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
+              $message->text ='[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
               $message->save();
 
               $battle->status = 3;
@@ -159,28 +159,28 @@ class BattleController extends Controller
               $message->sender_id = 0;
               $message->receiver_id = $target->id;
               $message->is_system = true;
-              $message->text ='Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->text ='[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $target->id;
               $message->is_system = true;
-              $message->text = $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
+              $message->text = '[Раунд: '.$round->round.'] ' .$user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $user->id;
               $message->is_system = true;
-              $message->text = $target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->text = '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $user->id;
               $message->is_system = true;
-              $message->text ='Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
+              $message->text ='[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
               $message->save();
 
               $battle->status = 3;
@@ -199,28 +199,28 @@ class BattleController extends Controller
               $message->sender_id = 0;
               $message->receiver_id = $target->id;
               $message->is_system = true;
-              $message->text ='Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->text ='[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $target->id;
               $message->is_system = true;
-              $message->text = $user->name . ' нанес Вам ' . $user_damage . ' ед. урона.';
+              $message->text = '[Раунд: '.$round->round.'] ' .$user->name . ' нанес Вам ' . $user_damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $user->id;
               $message->is_system = true;
-              $message->text = $target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
+              $message->text = '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
               $message->save();
 
               $message = new Message;
               $message->sender_id = 0;
               $message->receiver_id = $user->id;
               $message->is_system = true;
-              $message->text ='Вы нанесли '. $target->name . ' ' . $user_damage . ' ед. урона.';
+              $message->text ='[Раунд: '.$round->round.'] Вы нанесли '. $target->name . ' ' . $user_damage . ' ед. урона.';
               $message->save();
 
               $battle->increment('round', 1);
