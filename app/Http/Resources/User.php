@@ -21,6 +21,8 @@ class User extends JsonResource
             'level' => $this->level,
             'inventory_size' => $this->inventory_size,
             'gold' => $this->gold,
+            'hp_max' => $this->hp_max,
+            'hp_current' => $this->hp_current,
             'location_id' => $this->location_id,
             'in_battle' => $this->in_battle,
             'location' => $this->location,
