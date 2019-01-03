@@ -23,6 +23,7 @@ class User extends JsonResource
             'gold' => $this->gold,
             'location_id' => $this->location_id,
             'in_battle' => $this->in_battle,
+            'location' => Location::collection($this->location),
             'items' => Item::collection($this->items)
         ];
     }
