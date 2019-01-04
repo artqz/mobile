@@ -28,9 +28,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResources(['battles' => 'API\BattleController']);
     Route::get('shops/location/{id}', 'API\ShopController@location');
     Route::apiResources(['shops' => 'API\ShopController']);
+    Route::apiResources(['items' => 'API\ItemController']);
 });
 Route::apiResources(['users' => 'API\UserController']);
   Route::post('users/equip_item', 'API\UserController@equip_item');
 Route::apiResources(['locations' => 'API\LocationController']);
 
-Route::apiResources(['items' => 'API\ItemController']);
