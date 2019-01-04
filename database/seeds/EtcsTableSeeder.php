@@ -22,5 +22,14 @@ class EtcsTableSeeder extends Seeder
       foreach($etcItems as $etcItem){
         Etc::create($etcItem)->items()->save($item);
       }
+        $etcItems = [
+            ['name' => 'Gold', 'name_ru' => 'Золото', 'icon' => '/etc/gold.png'],
+        ];
+        $item = new Item;
+        $item->user_id = 2;
+        $item->count = 5;
+        foreach($etcItems as $etcItem){
+            Etc::create($etcItem)->items()->save($item);
+        }
     }
 }
