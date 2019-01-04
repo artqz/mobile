@@ -19,7 +19,7 @@ class ItemController extends Controller
      */
      public function store(Request $request)
      {
-         $user_id = $request->input('user_id');
+         $user_id = $request->user()->id;
          $item_id = $request->input('item_id');
 
          $user = User::findOrFail($user_id);
