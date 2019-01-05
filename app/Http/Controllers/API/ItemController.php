@@ -25,7 +25,7 @@ class ItemController extends Controller
          $user = User::findOrFail($user_id);
          $user_count_items = $user->items->count();
          $user_gold = $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first();
-        dd($user_gold);
+        dd($user);
          $item_shop = ShopList::findOrFail($item_id);
 
          //Проверка на присутствие в локации
