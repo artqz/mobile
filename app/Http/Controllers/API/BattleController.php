@@ -90,7 +90,15 @@ class BattleController extends Controller
         ->where('user_id_1', $target->id);
 
       if ($user_last_round->count() < 1) {
-        $user_damage = $user->strength * 6 * random_int(1,3);
+        //modificators
+        $weapon = $user->items->where('slot', 'main_hand')->first();
+        if($weapon) $weapon_p_atk = $weapon->itemable->p_atk;
+        else $weapon_p_atk = 1;
+        $lvl_mod = (($user->level + 89 + 4) * $user->level) / 100;
+        $str_mod = 1+(($user->strength * 10) / 100);
+        $user_p_atk = round($weapon_p_atk * $lvl_mod * $str_mod);
+
+        $user_damage = $user_p_atk;
 
         $round = new Round;
         $round->user_id_1 = $user->id;
