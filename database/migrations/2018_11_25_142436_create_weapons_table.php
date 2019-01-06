@@ -19,6 +19,8 @@ class CreateWeaponsTable extends Migration
             $table->string('name_ru');
             $table->string('icon')->nullable();
             $table->integer('p_atk')->default(1);
+            $table->integer('m_atk')->default(1);
+            $table->integer('type')->nullable();
             $table->timestamps();
         });
     }
