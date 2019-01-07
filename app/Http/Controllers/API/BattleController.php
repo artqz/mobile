@@ -115,8 +115,13 @@ class BattleController extends Controller
         if ($off_hand) $off_hand_p_def = $off_hand->itemable->p_def;
         else $off_hand_p_def = 0;
 
-        $target_def = $head_p_def + $chest_p_def + $legs_p_def + $gloves_p_def + $feet_p_def + $off_hand_p_def;
-        if ($target_def == 0) $target_def = 1;
+        $target_armor_def = $head_p_def + $chest_p_def + $legs_p_def + $gloves_p_def + $feet_p_def + $off_hand_p_def;
+        if ($target_armor_def == 0) $target_armor_def = 1;
+
+        $target_con_mod = 1+(($target->constitution*10)/100);
+        $target_level_mod = =1+(($target->level*10)/100);
+
+        $target_def = $target_armor_def*$target_con_mod*$target_level_mod;
 
         //weapon
         $weapon = $user->items->where('slot', 'main_hand')->first();
