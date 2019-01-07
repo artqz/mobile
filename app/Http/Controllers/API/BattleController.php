@@ -133,7 +133,7 @@ class BattleController extends Controller
         $round->battle_id = $battle->id;
         $round->round = $battle->round;
         $round->damage = $user_damage;
-        $round->text = $user->name . ' нанес ' . $target->name . ' ' . $user_damage . ' ед. урона. - ' .$user_p_atk;
+        $round->text = $user->name . ' нанес ' . $target->name . ' ' . $user_damage . ' ед. урона. - ' .$user_p_atk . ' '.$target_def;
 
         if ($round->save()) {
           if ($target_last_round->count() == 1) {
