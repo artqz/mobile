@@ -116,6 +116,7 @@ class BattleController extends Controller
         else $off_hand_p_def = 0;
 
         $target_def = $head_p_def + $chest_p_def + $legs_p_def + $gloves_p_def + $feet_p_def + $off_hand_p_def;
+        if ($target_def == 0) $target_def = 1;
 
         //weapon
         $weapon = $user->items->where('slot', 'main_hand')->first();
