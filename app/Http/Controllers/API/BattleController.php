@@ -119,7 +119,7 @@ class BattleController extends Controller
         if ($target_armor_def == 0) $target_armor_def = 1;
 
         $target_con_mod = 1+(($target->constitution*10)/100);
-        $target_level_mod = =1+(($target->level*10)/100);
+        $target_level_mod = 1+(($target->level*10)/100);
 
         $target_def = $target_armor_def*$target_con_mod*$target_level_mod;
 
