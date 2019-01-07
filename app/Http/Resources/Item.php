@@ -25,6 +25,21 @@ class Item extends JsonResource
                 'icon' => $this->itemable->icon,
                 'p_atk' => $this->itemable->p_atk,
                 'slot' => $this->slot,
+                'type' => $this->itemable->type,
+                'price' => $this->price
+            ];
+        }
+        elseif ($this->itemable_type == 'armor') {
+            return [
+                'id' => $this->id,
+                'name' => $this->itemable->name,
+                'name_ru' => $this->itemable->name_ru,
+                'itemable_type' => $this->itemable_type,
+                'itemable_id' => $this->itemable_id,
+                'icon' => $this->itemable->icon,
+                'p_def' => $this->itemable->p_def,
+                'slot' => $this->slot,
+                'type' => $this->itemable->type,
                 'price' => $this->price
             ];
         }

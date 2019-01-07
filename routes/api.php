@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('shops/location/{id}', 'API\ShopController@location');
     Route::apiResources(['shops' => 'API\ShopController']);
     Route::apiResources(['items' => 'API\ItemController']);
-    Route::post('users/equip_item', 'API\UserController@equip_item');
+    Route::get('users/equip_item/{id}', 'API\UserController@equip_item');
     Route::apiResources(['users' => 'API\UserController']);
 });
 Route::apiResources(['locations' => 'API\LocationController']);

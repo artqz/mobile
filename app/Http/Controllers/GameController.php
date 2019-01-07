@@ -16,13 +16,13 @@ use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\Auth;
 use App\Location;
 use Carbon\Carbon;
+use App\Http\Resources\Shop as ShopResource;
 
 class GameController extends Controller
 {
     public function index () {
-      $user = User::where('id', 1)->first();
-      $weapon = $user->items->where('slot', 'main_hand')->first();
-      dd($weapon->itemable->p_atk);
+      $shop = Shop::where('location_id', 2)->first();
+      return new ShopResource($shop);
     }
     public function index_t()
     {

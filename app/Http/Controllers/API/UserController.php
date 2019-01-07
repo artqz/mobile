@@ -74,27 +74,32 @@ class UserController extends Controller
             }
         }
     }
-    public function equip_item(Request $request)
+    public function equip_item(Request $request, $id)
     {
-      $select_item = $request->item;
+        $item = Item::where('id', $id)->where('user_id', $request->user()->id)->first();
 
-      if ($select_item['itemable_type'] == 'weapon') {
-        $slot = 'main_hand';
-        $remove_item = Item::where('slot', $slot)->first();
-
-        if (isset($remove_item)) {
-          $remove_item->slot = null;
-          $remove_item->save();
+        if ($item->itemable_type == 'armor') {
+            if ($item->itemable->type == 1) $slot = 'head';
+            elseif ($item->itemable->type == 2) $slot = 'chest';
+            elseif ($item->itemable->type == 3) $slot = 'legs';
+            elseif ($item->itemable->type == 4) $slot = 'gloves';
+            elseif ($item->itemable->type == 5) $slot = 'feet';
+            elseif ($item->itemable->type == 6) $slot = 'off_hand';
         }
-        $eqip_item = Item::findOrFail($select_item['id']);
-        $eqip_item->slot = $slot;
-        $eqip_item->save();
-        return $eqip_item;
-      }
-      else {
-        return 'govho';
-      }
+        elseif ($item->itemable_type == 'weapon') {
+            $slot = 'main_hand';
+        }
 
+        $is_item_equip = Item::where('slot', $slot)->where('user_id', $request->user()->id)->first();
+
+        if (isset($is_item_equip)) {
+            $is_item_equip->slot = null;
+            $is_item_equip->save();
+        }
+
+        $item->slot = $slot;
+        $item->save();
+        return $item;
     }
 
     /**
