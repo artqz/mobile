@@ -90,13 +90,39 @@ class BattleController extends Controller
         ->where('user_id_1', $target->id);
 
       if ($user_last_round->count() < 1) {
-        //modificators
+        //target armors
+        $head = $target->items->where('slot', 'head')->first();
+        if ($head) $head_p_def = $head->p_def;
+        else $head_p_def = 0;
+
+        $chest = $target->items->where('slot', 'chest')->first();
+        if ($chest) $chest_p_def = $chest->p_def;
+        else $chest_p_def = 0;
+
+        $legs = $target->items->where('slot', 'legs')->first();
+        if ($legs) $legs_p_def = $legs->p_def;
+        else $legs_p_def = 0;
+
+        $gloves = $target->items->where('slot', 'gloves')->first();
+        if ($gloves) $gloves_p_def = $gloves->p_def;
+        else $gloves_p_def = 0;
+
+        $feet = $target->items->where('slot', 'feet')->first();
+        if ($feet) $feet_p_def = $feet->p_def;
+        else $feet_p_def = 0;
+
+        $off_hand = $target->items->where('slot', 'off_hand')->first();
+        if ($off_hand) $off_hand_p_def = $off_hand->p_def;
+        else $off_hand_p_def = 0;
+
+        $target_def = $head_p_def + $chest_p_def + $legs_p_def + $gloves_p_def + $feet_p_def + $off_hand_p_def;
+
+        //weapon
         $weapon = $user->items->where('slot', 'main_hand')->first();
         if($weapon) $weapon_p_atk = $weapon->itemable->p_atk;
         else $weapon_p_atk = 1;
         $lvl_mod = (($user->level + 89 + 4) * $user->level) / 100;
-        $str_mod = 1+(($user->strength * 10) / 100);
-        $user_p_atk = round($weapon_p_atk * $lvl_mod * $str_mod);
+        $user_p_atk = round(($weapon_p_atk * $lvl_mod * $user->strength)/$target_def);
 
         $user_damage = $user_p_atk;
 
