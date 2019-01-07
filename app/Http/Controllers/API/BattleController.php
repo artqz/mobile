@@ -92,27 +92,27 @@ class BattleController extends Controller
       if ($user_last_round->count() < 1) {
         //target armors
         $head = $target->items->where('slot', 'head')->first();
-        if ($head) $head_p_def = $head->p_def;
+        if ($head) $head_p_def = $head->itemable->p_def;
         else $head_p_def = 0;
 
         $chest = $target->items->where('slot', 'chest')->first();
-        if ($chest) $chest_p_def = $chest->p_def;
+        if ($chest) $chest_p_def = $chest->itemable->p_def;
         else $chest_p_def = 0;
 
         $legs = $target->items->where('slot', 'legs')->first();
-        if ($legs) $legs_p_def = $legs->p_def;
+        if ($legs) $legs_p_def = $legs->itemable->p_def;
         else $legs_p_def = 0;
 
         $gloves = $target->items->where('slot', 'gloves')->first();
-        if ($gloves) $gloves_p_def = $gloves->p_def;
+        if ($gloves) $gloves_p_def = $gloves->itemable->p_def;
         else $gloves_p_def = 0;
 
         $feet = $target->items->where('slot', 'feet')->first();
-        if ($feet) $feet_p_def = $feet->p_def;
+        if ($feet) $feet_p_def = $feet->itemable->p_def;
         else $feet_p_def = 0;
 
         $off_hand = $target->items->where('slot', 'off_hand')->first();
-        if ($off_hand) $off_hand_p_def = $off_hand->p_def;
+        if ($off_hand) $off_hand_p_def = $off_hand->itemable->p_def;
         else $off_hand_p_def = 0;
 
         $target_def = $head_p_def + $chest_p_def + $legs_p_def + $gloves_p_def + $feet_p_def + $off_hand_p_def;
