@@ -128,7 +128,7 @@ class BattleController extends Controller
         if($weapon) $weapon_p_atk = $weapon->itemable->p_atk;
         else $weapon_p_atk = 1;
         $lvl_mod = (($user->level + 89 + 4) * $user->level) / 100;
-        $user_p_atk = round(($weapon_p_atk * $lvl_mod * $user->strength)/$target_def);
+        $user_p_atk = round(70 * (2* $weapon_p_atk * $lvl_mod * $user->strength)/$target_def);
 
         $user_damage = $user_p_atk;
 
