@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResources(['shops' => 'API\ShopController']);
     Route::apiResources(['items' => 'API\ItemController']);
     Route::get('users/equip_item/{id}', 'API\UserController@equip_item');
+    Route::get('users/remove_item/{id}', 'API\UserController@remove_item');
     Route::get('users/get_gold', 'API\UserController@get_gold');
     Route::apiResources(['users' => 'API\UserController']);
 });
