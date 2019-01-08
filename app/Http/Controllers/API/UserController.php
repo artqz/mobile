@@ -118,9 +118,9 @@ class UserController extends Controller
         }
         elseif ($item->itemable_type == 'jewellery') {
             if ($item->itemable->type == 1) {
-                $earring_slot_one = $user_items->where('slot', 'ear_one')->first();
-                $earring_slot_two = $user_items->where('slot', 'ear_one')->first();
-                
+                $earring_slot_one = $user_items->where('slot', 'earring_one')->first();
+                $earring_slot_two = $user_items->where('slot', 'earring_two')->first();
+
                 if (!isset($earring_slot_one)) $slot = 'earring_one';
                 elseif (!isset($earring_slot_two)) $slot = 'earring_two';
                 elseif (isset($earring_slot_one) || isset($earring_slot_two)) $slot = 'earring_one';
