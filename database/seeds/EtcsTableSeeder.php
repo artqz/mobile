@@ -15,12 +15,11 @@ class EtcsTableSeeder extends Seeder
     {
       $etcItems = [
           ['name' => 'Gold', 'name_ru' => 'Золото', 'icon' => '/etc/gold.png'],
+          ['name' => 'Heal Potion', 'name_ru' => 'Зелье Здоровья', 'icon' => '/etc/hp_potion_small.png']
       ];
-      $item = new Item;
-      $item->user_id = 1;
-      $item->count = 5;
+
       foreach($etcItems as $etcItem){
-        Etc::create($etcItem)->items()->save($item);
+        Etc::create($etcItem);
       }
     }
 }

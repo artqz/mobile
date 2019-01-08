@@ -24,7 +24,7 @@ class WeaponsTableSeeder extends Seeder
           ['name' => 'Sword', 'name_ru' => 'Меч Бздуна', 'p_atk' => 6, 'm_atk' => 5, 'icon' => '/weapons/sword.png', 'type' => 4],
           ['name' => 'Staff', 'name_ru' => 'Посох Бздуна', 'p_atk' => 5, 'm_atk' => 7, 'icon' => '/weapons/staff.png', 'type' => 5],
           ['name' => 'Bow', 'name_ru' => 'Лук Бздуна', 'p_atk' => 16, 'm_atk' => 6, 'icon' => '/weapons/bow.png', 'type' => 1],
-          ['name' => 'Dagger', 'name_ru' => 'Нож Бздуна', 'p_atk' => 5, 'm_atk' => 5, 'icon' => '/weapons/bow.png', 'type' => 1],
+          ['name' => 'Dagger', 'name_ru' => 'Нож Бздуна', 'p_atk' => 5, 'm_atk' => 5, 'icon' => '/weapons/dagger.png', 'type' => 1],
       ];
 
       foreach($weapons as $weapon){
