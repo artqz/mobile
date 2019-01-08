@@ -77,13 +77,22 @@ class UserController extends Controller
     }
     public function get_gold(Request $request)
     {
-        $item = new Item;
-        $item->user_id = $request->user()->id;
-        $item->count = 100;
+        $user_id = $request->user()->id;
+        $user = User::where('id', $user_id)->first();
+        $gold_item = $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first();
+        if ($gold_item) {
+            $gold_item->increment('count', 100);
+            $gold_item->save();
+        }
+        else {
+            $item = new Item;
+            $item->user_id = $user_id;
+            $item->count = 100;
 
-        $etc = Etc::where('id', 1)->items()->save($item);
-        
-        return $etc;
+            Etc::where('id', 1)->first()->items()->save($item);
+        }
+
+        return 'ok';
     }
     public function equip_item(Request $request, $id)
     {

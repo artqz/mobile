@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Etc;
 use App\Shop;
 use App\ShopList;
 use App\Weapon;
@@ -21,35 +22,22 @@ use App\Http\Resources\Shop as ShopResource;
 class GameController extends Controller
 {
     public function index () {
-      $target = User::where('id', 1)->first();
-      //target armors
-      $head = $target->items->where('slot', 'head')->first();
-      if ($head) $head_p_def = $head->p_def;
-      else $head_p_def = 0;
+      $user_id = 1;
+      $user = User::where('id', $user_id)->first();
+      $gold_item = $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first();
+      if ($gold_item) {
+        $gold_item->increment('count', 100);
+        $gold_item->save();
+      }
+      else {
+        $item = new Item;
+        $item->user_id = $user_id;
+        $item->count = 100;
 
-      $chest = $target->items->where('slot', 'chest')->first();
-      if ($chest) $chest_p_def = $chest->p_def;
-      else $chest_p_def = 0;
+        Etc::where('id', 1)->first()->items()->save($item);
+      }
 
-      $legs = $target->items->where('slot', 'legs')->first();
-      if ($legs) $legs_p_def = $legs->p_def;
-      else $legs_p_def = 0;
-
-      $gloves = $target->items->where('slot', 'gloves')->first();
-      if ($gloves) $gloves_p_def = $gloves->p_def;
-      else $gloves_p_def = 0;
-
-      $feet = $target->items->where('slot', 'feet')->first();
-      if ($feet) $feet_p_def = $feet->p_def;
-      else $feet_p_def = 0;
-
-      $off_hand = $target->items->where('slot', 'off_hand')->first();
-      if ($off_hand) $off_hand_p_def = $off_hand->p_def;
-      else $off_hand_p_def = 0;
-
-      $target_def = $head_p_def + $chest_p_def + $legs_p_def + $gloves_p_def + $feet_p_def + $off_hand_p_def;
-      if ($target_def == 0) $target_def = 1;
-      dd($feet);
+      return 'ok';
     }
     public function index_t()
     {
