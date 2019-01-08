@@ -23,7 +23,7 @@ class ItemController extends Controller
          $item_id = $request->input('item_id');
 
          $user = User::findOrFail($user_id);
-         $user_count_items = $user->items->count();
+         $user_count_items = $user->items->where('slot', null)->count();
          $user_gold = $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first();
          $item_shop = ShopList::findOrFail($item_id);
 
