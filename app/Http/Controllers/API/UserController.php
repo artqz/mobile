@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Etc;
 use App\User;
 use App\Item;
 use Illuminate\Http\Request;
@@ -73,6 +74,16 @@ class UserController extends Controller
                 return new UserResource($user);
             }
         }
+    }
+    public function get_gold(Request $request)
+    {
+        $item = new Item;
+        $item->user_id = $request->user()->id;
+        $item->count = 100;
+
+        $etc = Etc::where('id', 1)->items()->save($item);
+        
+        return $etc;
     }
     public function equip_item(Request $request, $id)
     {
