@@ -106,6 +106,7 @@ class UserController extends Controller
     public function equip_item(Request $request, $id)
     {
         $item = Item::where('id', $id)->where('user_id', $request->user()->id)->first();
+        $user_items = $request->user()->items;
 
         if ($item->itemable_type == 'armor') {
             if ($item->itemable->type == 1) $slot = 'head';
@@ -116,7 +117,14 @@ class UserController extends Controller
             elseif ($item->itemable->type == 6) $slot = 'off_hand';
         }
         elseif ($item->itemable_type == 'jewellery') {
-            if ($item->itemable->type == 1) $slot = 'ear';
+            if ($item->itemable->type == 1) {
+                $earring_slot_one = $user_items->where('slot', 'ear_one')->first();
+                $earring_slot_two = $user_items->where('slot', 'ear_one')->first();
+                
+                if (!isset($earring_slot_one)) $slot = 'earring_one';
+                elseif (!isset($earring_slot_two)) $slot = 'earring_two';
+                elseif (isset($earring_slot_one) || isset($earring_slot_two)) $slot = 'earring_one';
+            }
             elseif ($item->itemable->type == 2) $slot = 'finger';
             elseif ($item->itemable->type == 3) $slot = 'neck';
         }
