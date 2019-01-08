@@ -125,8 +125,15 @@ class UserController extends Controller
                 elseif (!isset($earring_slot_two)) $slot = 'earring_two';
                 elseif (isset($earring_slot_one) || isset($earring_slot_two)) $slot = 'earring_one';
             }
-            elseif ($item->itemable->type == 2) $slot = 'finger';
-            elseif ($item->itemable->type == 3) $slot = 'neck';
+            elseif ($item->itemable->type == 2) {
+                $ring_slot_one = $user_items->where('slot', 'ring_one')->first();
+                $ring_slot_two = $user_items->where('slot', 'ring_two')->first();
+
+                if (!isset($ring_slot_one)) $slot = 'ring_one';
+                elseif (!isset($ring_slot_two)) $slot = 'ring_two';
+                elseif (isset($ring_slot_one) || isset($earring_slot_two)) $slot = 'ring_one';
+            }
+            elseif ($item->itemable->type == 3) $slot = 'necklace';
         }
         elseif ($item->itemable_type == 'weapon') {
             $slot = 'main_hand';
