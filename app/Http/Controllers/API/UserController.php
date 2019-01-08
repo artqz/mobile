@@ -115,6 +115,11 @@ class UserController extends Controller
             elseif ($item->itemable->type == 5) $slot = 'feet';
             elseif ($item->itemable->type == 6) $slot = 'off_hand';
         }
+        elseif ($item->itemable_type == 'jewellery') {
+            if ($item->itemable->type == 1) $slot = 'ear';
+            elseif ($item->itemable->type == 2) $slot = 'finger';
+            elseif ($item->itemable->type == 3) $slot = 'neck';
+        }
         elseif ($item->itemable_type == 'weapon') {
             $slot = 'main_hand';
         }
