@@ -36,6 +36,6 @@ class User extends Authenticatable
     }
     public function items()
     {
-        return $this->hasMany('App\Item')->orderBy('update_at');
+        return $this->hasMany('App\Item')->orderBy('updated_at');
     }
 }
