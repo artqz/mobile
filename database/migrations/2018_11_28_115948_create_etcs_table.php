@@ -17,6 +17,8 @@ class CreateEtcsTable extends Migration
           $table->increments('id');
           $table->string('name');
           $table->string('name_ru');
+          $table->integer('value')->nullable();
+          $table->integer('type')->nullable();
           $table->string('icon')->nullable();
           $table->timestamps();
         });

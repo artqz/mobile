@@ -96,12 +96,12 @@ class UserController extends Controller
     }
     public function remove_item (Request $request, $id)
     {
-        $item = Item::where('id', $id)->where('user_id', $request->user()->id)->first();
-
-        if ($item->slot != null) {
+      $item = Item::where('id', $id)->where('user_id', $request->user()->id)->where('itemable_type', '!=', 'etc')->first();
+        if ($item && $item->slot != null) {
             $item->slot = null;
             $item->save();
         }
+        return 'ok';
     }
     public function equip_item(Request $request, $id)
     {

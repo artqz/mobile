@@ -19,7 +19,7 @@ class User extends JsonResource
             'name' => $this->name,
             'avatar' => $this->avatar,
             'level' => $this->level,
-            'inventory_size' => $this->inventory_size,
+            'bag_size' => $this->items->where('slot', 'bag')->first()->itemable->value,
             'gold' => $this->gold,
             'hp_max' => $this->hp_max,
             'hp_current' => $this->hp_current,

@@ -25,12 +25,13 @@ class ItemController extends Controller
          $user = User::findOrFail($user_id);
          $user_count_items = $user->items->where('slot', null)->count();
          $user_gold = $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first();
+         $user_bug_size = $user->items->where('slot', 'bag')->first()->itemable->value;
          $item_shop = ShopList::findOrFail($item_id);
 
          //Проверка на присутствие в локации
-         
+
          //Проверка на заполненность
-         if($user->inventory_size > $user_count_items) {
+         if($user_bug_size > $user_count_items) {
            $item = new Item;
            $item->itemable_type = $item_shop->itemable_type;
            $item->itemable_id = $item_shop->itemable_id;

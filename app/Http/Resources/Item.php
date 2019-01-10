@@ -65,6 +65,7 @@ class Item extends JsonResource
                 'itemable_type' => $this->itemable_type,
                 'itemable_id' => $this->itemable_id,
                 'icon' => $this->itemable->icon,
+                'slot' => $this->slot,
                 'count' => $this->count,
                 'price' => $this->price
             ];
