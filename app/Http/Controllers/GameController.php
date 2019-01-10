@@ -22,22 +22,34 @@ use App\Http\Resources\Shop as ShopResource;
 class GameController extends Controller
 {
     public function index () {
-      $user_id = 1;
-      $user = User::where('id', $user_id)->first();
-      $gold_item = $user->items->where('itemable_type', 'etc')->where('itemable_id', 1)->first();
-      if ($gold_item) {
-        $gold_item->increment('count', 100);
-        $gold_item->save();
-      }
-      else {
-        $item = new Item;
-        $item->user_id = $user_id;
-        $item->count = 100;
+      $user = User::where('id', 1)->first();
+      $weapon = $user->items->where('slot', 'main_hand')->first()->itemable;
+      //types
+      //Bow - 1
+      //Dagger - 2
+      //Pole - 3
+      //Sword - 4
+      //Blunt - 5
+      //Fist - 6
+      if ($weapon->type == 1) $weapon_sc = 120;
+      elseif ($weapon->type == 2) $weapon_sc = 120;
+      elseif ($weapon->type == 3) $weapon_sc = 40;
+      elseif ($weapon->type == 4) $weapon_sc = 60;
+      elseif ($weapon->type == 5) $weapon_sc = 50;
+      elseif ($weapon->type == 6) $weapon_sc = 70;
+      $sc = $weapon_sc / 1000 * 100;
+      $sc_random = rand($sc, 100);
+      dd($sc_random);
 
-        Etc::where('id', 1)->first()->items()->save($item);
+      function attack($attack, $defend)
+      {
+        return (mt_rand(1, $attack) > $defend);
       }
 
-      return 'ok';
+      $attack = 100;
+      $defend = 75;
+
+      var_dump(attack(100,75));
     }
     public function index_t()
     {
