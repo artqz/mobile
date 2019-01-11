@@ -178,7 +178,55 @@ class BattleController extends Controller
 
         if ($round->save()) {
           if ($target_last_round->count() == 1) {
-            if ($target->hp_current - $user_damage <= 0) {
+            if ($target->hp_current - $user_damage <= 0 && $user->hp_current - $target_last_round->first()->damage <=0  ) {
+              $target->hp_current = 0;
+              $target->in_battle = false;
+              $target->increment('count_deadheat', 1);
+              $target->save();
+
+              $user->hp_current = 0;
+              $user->in_battle = false;
+              $user->increment('count_deadheat', 1);
+              $user->save();
+
+              //Отправляем системные сообщения
+              $messages = [
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' . $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли смертельный удар'. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона. Это ничья! Вы получаете 0 опыта и 0 золота.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам смертельный удар ' . $target_last_round->first()->damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это ничья! Вы получаете 0 опыта и 0 золота.'
+                  ]
+              ];
+
+              foreach($messages as $message){
+                Message::create($message);
+              }
+
+              $battle->status = 3;
+              $battle->save();
+
+              return response()->json(['success' => $battle]);
+            }
+            elseif ($target->hp_current - $user_damage <= 0) {
               $target->hp_current = 0;
               $target->in_battle = false;
               $target->increment('count_loses', 1);
