@@ -26,6 +26,8 @@ class User extends JsonResource
             'location_id' => $this->location_id,
             'in_battle' => $this->in_battle,
             'location' => $this->location,
+            'count_wins' => $this->count_wins,
+            'count_loses' => $this->count_loses,
             'items' => Item::collection($this->items)
         ];
     }
