@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->integer('location_id')->references('id')->on('locations')->default(1);
             $table->integer('count_wins')->default(0);
             $table->integer('count_loses')->default(0);
+            $table->integer('count_deadheat')->default(0);
             $table->integer('user_ref_id')->references('id')->on('users')->default(0);
             $table->boolean('in_battle')->default(false);
             $table->dateTime('active_at')->default(Now());
