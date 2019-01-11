@@ -271,7 +271,7 @@ class BattleController extends Controller
 
               $battle->status = 3;
               $battle->save();
-              
+
               return response()->json(['success' => $battle]);
             }
             else {
@@ -300,7 +300,7 @@ class BattleController extends Controller
                     'sender_id' => '0',
                     'receiver_id' => $target->id,
                     'is_system' => true,
-                    'text' => '[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.'
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.'
                   ],
                   [
                     'sender_id' => '0',
