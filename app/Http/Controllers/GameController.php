@@ -24,6 +24,7 @@ class GameController extends Controller
     public function index () {
       $user = User::where('id', 1)->first();
       $weapon = $user->items->where('slot', 'main_hand')->first()->itemable;
+
       //types
       //Bow - 1
       //Dagger - 2
@@ -39,17 +40,13 @@ class GameController extends Controller
       elseif ($weapon->type == 6) $weapon_sc = 70;
       $sc = $weapon_sc / 1000 * 100;
       $sc_random = rand($sc, 100);
-      dd($sc_random);
 
       function attack($attack, $defend)
       {
         return (mt_rand(1, $attack) > $defend);
       }
 
-      $attack = 100;
-      $defend = 75;
-
-      var_dump(attack(100,75));
+      dd(mt_rand(1, 100) <= $sc);
     }
     public function index_t()
     {

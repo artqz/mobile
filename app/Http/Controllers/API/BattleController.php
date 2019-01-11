@@ -121,14 +121,42 @@ class BattleController extends Controller
         $target_con_mod = 1+(($target->constitution*10)/100);
         $target_level_mod = 1+(($target->level*10)/100);
 
-        $target_def = $target_armor_def*$target_con_mod*$target_level_mod;
+        $target_def = $target_armor_def * $target_con_mod * $target_level_mod;
 
         //weapon
-        $weapon = $user->items->where('slot', 'main_hand')->first();
-        if($weapon) $weapon_p_atk = $weapon->itemable->p_atk;
+        $weapon = $user->items
+          ->where('slot', 'main_hand')
+          ->first()
+          ->itemable;
+
+        if($weapon) $weapon_p_atk = $weapon->p_atk;
         else $weapon_p_atk = 1;
+
+        //Определяем шанс крита от типа оружия
+        if ($weapon->type == 1) $weapon_cc = 120;
+        elseif ($weapon->type == 2) $weapon_cc = 120;
+        elseif ($weapon->type == 3) $weapon_cc = 40;
+        elseif ($weapon->type == 4) $weapon_cc = 60;
+        elseif ($weapon->type == 5) $weapon_cc = 50;
+        elseif ($weapon->type == 6) $weapon_cc = 70;
+        else $weapon_cc = 30;
+        $critical_chance = $weapon_cc / 1000 * 100;
+
+        //Рандомими критический удар
+        function critical_hit($critical_chance)
+        {
+          if (mt_rand(1, 99) <= $critical_chance) {
+            $critical_damage = 2;
+          }
+          else $critical_damage = 1;
+          return $critical_damage;
+        }
+
+        //Получаем множитель критического урона
+        $critical_damage = critical_hit($critical_chance);
+
         $lvl_mod = (($user->level + 89 + 4) * $user->level) / 100;
-        $user_p_atk = round(70 * (2* $weapon_p_atk * $lvl_mod * $user->strength)/$target_def);
+        $user_p_atk = round(70 * ($critical_damage * $weapon_p_atk * $lvl_mod * $user->strength)/$target_def);
 
         $user_damage = $user_p_atk;
 
