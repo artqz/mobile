@@ -201,7 +201,7 @@ class BattleController extends Controller
                     'sender_id' => '0',
                     'receiver_id' => $target->id,
                     'is_system' => true,
-                    'text' => '[Раунд: '.$round->round.'] Вы нанесли смертельный удар'. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона. Это ничья! Вы получаете 0 опыта и 0 золота.'
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона. Это ничья! Вы получаете 0 опыта и 0 золота.'
                   ],
                   [
                     'sender_id' => '0',
