@@ -51,7 +51,7 @@ class Item extends JsonResource
                 'itemable_type' => $this->itemable_type,
                 'itemable_id' => $this->itemable_id,
                 'icon' => $this->itemable->icon,
-                'm_def' => $this->itemable->p_def,
+                'm_def' => $this->itemable->m_def,
                 'slot' => $this->slot,
                 'type' => $this->itemable->type,
                 'price' => $this->price

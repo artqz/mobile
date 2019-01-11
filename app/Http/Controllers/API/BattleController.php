@@ -126,20 +126,26 @@ class BattleController extends Controller
         //weapon
         $weapon = $user->items
           ->where('slot', 'main_hand')
-          ->first()
-          ->itemable;
+          ->first();
 
-        if($weapon) $weapon_p_atk = $weapon->p_atk;
-        else $weapon_p_atk = 1;
+        if ($weapon) {
+          $weapon_p_atk = $weapon->itemable->p_atk;
 
-        //Определяем шанс крита от типа оружия
-        if ($weapon->type == 1) $weapon_cc = 120;
-        elseif ($weapon->type == 2) $weapon_cc = 120;
-        elseif ($weapon->type == 3) $weapon_cc = 40;
-        elseif ($weapon->type == 4) $weapon_cc = 60;
-        elseif ($weapon->type == 5) $weapon_cc = 50;
-        elseif ($weapon->type == 6) $weapon_cc = 70;
-        else $weapon_cc = 30;
+          //Определяем вероятность крита от типа оружия
+          $weapon_type = $weapon->itemable->type;
+          if ($weapon_type == 1) $weapon_cc = 120;
+          elseif ($weapon_type == 2) $weapon_cc = 120;
+          elseif ($weapon_type == 3) $weapon_cc = 40;
+          elseif ($weapon_type == 4) $weapon_cc = 60;
+          elseif ($weapon_type == 5) $weapon_cc = 50;
+          elseif ($weapon_type == 6) $weapon_cc = 70;
+        }
+        else {
+          $weapon_p_atk = 1;
+          $weapon_cc = 30;
+        }
+
+        //Определяем шанс крита
         $critical_chance = $weapon_cc / 1000 * 100;
 
         //Рандомими критический удар
@@ -155,18 +161,20 @@ class BattleController extends Controller
         //Получаем множитель критического урона
         $critical_damage = critical_hit($critical_chance);
 
+        //Считаем модификатор уровня
         $lvl_mod = (($user->level + 89 + 4) * $user->level) / 100;
-        $user_p_atk = round(70 * ($critical_damage * $weapon_p_atk * $lvl_mod * $user->strength)/$target_def);
 
+        //Считаем физическую атаку игрока
+        $user_p_atk = round(70 * ($critical_damage * $weapon_p_atk * $lvl_mod * $user->strength)/$target_def);
         $user_damage = $user_p_atk;
 
+        //Записываем результат раунда в таблицу
         $round = new Round;
         $round->user_id_1 = $user->id;
         $round->user_id_2 = $target->id;
         $round->battle_id = $battle->id;
         $round->round = $battle->round;
         $round->damage = $user_damage;
-        $round->text = $user->name . ' нанес ' . $target->name . ' ' . $user_damage . ' ед. урона. - ' .$user_p_atk . ' '.$target_def;
 
         if ($round->save()) {
           if ($target_last_round->count() == 1) {
@@ -181,36 +189,42 @@ class BattleController extends Controller
               $user->increment('count_wins', 1);
               $user->save();
 
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $target->id;
-              $message->is_system = true;
-              $message->text = '[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
-              $message->save();
+              //Отправляем системные сообщения
+              $messages = [
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' . $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.'
+                  ]
+              ];
 
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $target->id;
-              $message->is_system = true;
-              $message->text = '[Раунд: '.$round->round.'] ' . $user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
-              $message->save();
-
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $user->id;
-              $message->is_system = true;
-              $message->text = '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
-              $message->save();
-
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $user->id;
-              $message->is_system = true;
-              $message->text ='[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
-              $message->save();
+              foreach($messages as $message){
+                Message::create($message);
+              }
 
               $battle->status = 3;
-              return $battle->save();
+              $battle->save();
+
+              return response()->json(['success' => $battle]);
             }
             elseif ($user->hp_current - $target_last_round->first()->damage <=0) {
               $user->hp_current = 0;
@@ -223,36 +237,42 @@ class BattleController extends Controller
               $target->increment('count_wins', 1);
               $target->save();
 
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $target->id;
-              $message->is_system = true;
-              $message->text ='[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
-              $message->save();
+              //Отправляем системные сообщения
+              $messages = [
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли '. $target->name . ' ' . $user_damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' . $target->name . ' нанес Вам смертельный удар ' . $target_last_round->first()->damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' .$user->name . ' нанес Вам ' . $user_damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.'
+                  ]
+              ];
 
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $target->id;
-              $message->is_system = true;
-              $message->text = '[Раунд: '.$round->round.'] ' .$user->name . ' нанес Вам смертельный удар ' . $user_damage . ' ед. урона.';
-              $message->save();
-
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $user->id;
-              $message->is_system = true;
-              $message->text = '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
-              $message->save();
-
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $user->id;
-              $message->is_system = true;
-              $message->text ='[Раунд: '.$round->round.'] Вы нанесли смертельный удар '. $target->name . ' ' . $user_damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.';
-              $message->save();
+              foreach($messages as $message){
+                Message::create($message);
+              }
 
               $battle->status = 3;
-              return $battle->save();
+              $battle->save();
+              
+              return response()->json(['success' => $battle]);
             }
             else {
               $target->decrement('hp_current', $user_damage);
@@ -262,37 +282,42 @@ class BattleController extends Controller
               $user->decrement('hp_current', $target_last_round->first()->damage);
               $user->save();
 
-              //message damage
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $target->id;
-              $message->is_system = true;
-              $message->text ='[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона.';
-              $message->save();
+              //Отправляем системные сообщения
+              $messages = [
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли '. $target->name . ' ' . $user_damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $user->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' . $target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] Вы нанесли '. $user->name . ' ' . $target_last_round->first()->damage . ' ед. урона. Это победа! Вы получаете 0 опыта и 0 золота.'
+                  ],
+                  [
+                    'sender_id' => '0',
+                    'receiver_id' => $target->id,
+                    'is_system' => true,
+                    'text' => '[Раунд: '.$round->round.'] ' .$user->name . ' нанес Вам ' . $user_damage . ' ед. урона.'
+                  ]
+              ];
 
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $target->id;
-              $message->is_system = true;
-              $message->text = '[Раунд: '.$round->round.'] ' .$user->name . ' нанес Вам ' . $user_damage . ' ед. урона.';
-              $message->save();
-
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $user->id;
-              $message->is_system = true;
-              $message->text = '[Раунд: '.$round->round.'] ' .$target->name . ' нанес Вам ' . $target_last_round->first()->damage . ' ед. урона.';
-              $message->save();
-
-              $message = new Message;
-              $message->sender_id = 0;
-              $message->receiver_id = $user->id;
-              $message->is_system = true;
-              $message->text ='[Раунд: '.$round->round.'] Вы нанесли '. $target->name . ' ' . $user_damage . ' ед. урона.';
-              $message->save();
+              foreach($messages as $message){
+                Message::create($message);
+              }
 
               $battle->increment('round', 1);
-              return $battle->save();
+              $battle->save();
+
+              return response()->json(['success' => $battle]);
             }
           }
           else {
@@ -301,7 +326,7 @@ class BattleController extends Controller
         }
       }
       elseif ($user_last_round == $target_last_round) {
-        dd('raschet');
+        return 'og';
       }
       elseif ($user_last_round > $target_last_round) {
         return 'jdem hod protivnika!';

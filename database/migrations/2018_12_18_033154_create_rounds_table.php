@@ -20,7 +20,6 @@ class CreateRoundsTable extends Migration
           $table->integer('user_id_1')->references('id')->on('users');
           $table->integer('user_id_2')->references('id')->on('users');
           $table->integer('damage')->nullable();
-          $table->string('text')->nullable();
           $table->timestamps();
         });
     }

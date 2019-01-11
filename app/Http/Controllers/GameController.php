@@ -38,15 +38,12 @@ class GameController extends Controller
       elseif ($weapon->type == 4) $weapon_sc = 60;
       elseif ($weapon->type == 5) $weapon_sc = 50;
       elseif ($weapon->type == 6) $weapon_sc = 70;
-      $sc = $weapon_sc / 1000 * 100;
-      $sc_random = rand($sc, 100);
+      $critical_chance = $weapon_sc / 1000 * 100;
 
-      function attack($attack, $defend)
+      function critical_hit($critical_chance)
       {
-        return (mt_rand(1, $attack) > $defend);
+        return (mt_rand(1, 100) <= $critical_chance);
       }
-
-      dd(mt_rand(1, 100) <= $sc);
     }
     public function index_t()
     {
