@@ -58,5 +58,17 @@ class LocationsTableSeeder extends Seeder
             'width' => '32',
             'height' => '32'
         ]);
+        Location::create([
+            'location_id' => 1,
+            'name' => 'Fields',
+            'name_ru' => 'Пригородные поля',
+            'type' => 'arena',
+            'model' => '/giran/tower.png',
+            'background' => '/giran/giran_bg.jpg',
+            'x' => '0',
+            'y' => '0',
+            'width' => '32',
+            'height' => '32'
+        ]);
     }
 }
