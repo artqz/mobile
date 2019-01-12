@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EtcsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(NpcsTableSeeder::class);
+        $this->call(RespawnsTableSeeder::class);
         $this->call(ClientsTableSeeder::class);
     }
 }

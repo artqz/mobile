@@ -9,7 +9,7 @@ use App\Weapon;
 use App\User;
 use App\Item;
 use App\Chat;
-use App\Fight;
+use App\Respawn;
 use App\Battle;
 use App\Round;
 use App\FightChronology;
@@ -22,27 +22,21 @@ use App\Http\Resources\Shop as ShopResource;
 class GameController extends Controller
 {
     public function index () {
-      $user = User::where('id', 1)->first();
-      $weapon = $user->items->where('slot', 'main_hand')->first()->itemable;
+      $user_id = 1;
+      $id = 4;
+      $respawn = Respawn::where('location_id', $id)->get();
+      return $respawn;
 
-      //types
-      //Bow - 1
-      //Dagger - 2
-      //Pole - 3
-      //Sword - 4
-      //Blunt - 5
-      //Fist - 6
-      if ($weapon->type == 1) $weapon_sc = 120;
-      elseif ($weapon->type == 2) $weapon_sc = 120;
-      elseif ($weapon->type == 3) $weapon_sc = 40;
-      elseif ($weapon->type == 4) $weapon_sc = 60;
-      elseif ($weapon->type == 5) $weapon_sc = 50;
-      elseif ($weapon->type == 6) $weapon_sc = 70;
-      $critical_chance = $weapon_sc / 1000 * 100;
-
-      function critical_hit($critical_chance)
-      {
-        return (mt_rand(1, 100) <= $critical_chance);
+      // Проверяем имеются ли у пользователя заявки на бой
+      $exists_battle = Battle::where('user_id_1', $user_id)->where('status', 0)->first();
+      if(!$exists_battle) {
+        //Если нет, то создаем бой
+        $battle = new Battle;
+        $battle->user_id_1 = $request->user()->id;
+        $battle->started_at = Now();
+        if($battle->save()) {
+          return new BattleResource($battle);
+        }
       }
     }
     public function index_t()
