@@ -14,6 +14,10 @@ class Area extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'npc' => $this->npc,
+            'location' => $this->location
+        ];
     }
 }
