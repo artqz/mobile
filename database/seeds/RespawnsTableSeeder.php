@@ -15,6 +15,7 @@ class RespawnsTableSeeder extends Seeder
         $respawns = [
             ['npc_id' => 1, 'location_id' => 5],
             ['npc_id' => 2, 'location_id' => 5],
+            ['npc_id' => 3, 'location_id' => 5],
         ];
 
         foreach($respawns as $respawn){
