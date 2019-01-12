@@ -62,7 +62,7 @@ class LocationsTableSeeder extends Seeder
             'location_id' => 1,
             'name' => 'Fields',
             'name_ru' => 'Пригородные поля',
-            'type' => 'arena',
+            'type' => 'area',
             'model' => '/giran/tower.png',
             'background' => '/giran/giran_bg.jpg',
             'x' => '0',
