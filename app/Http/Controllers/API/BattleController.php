@@ -22,6 +22,26 @@ class BattleController extends Controller
       return BattleResource::collection($battles);
     }
 
+    public function pve_current (Request $request)
+    {
+      //Status battle:
+      //0 - open;
+      //1 - battle;
+      //2 - close;
+      //type battle:
+      //0 - pvp;
+      //1 - pve;
+
+      $battle = Battle::where('status', 1)
+        ->where('user_id_1', $user_id)
+        ->where('type', 1)
+        ->first();
+
+      if ($battle) {
+        return new BattleResource($battle);
+      }
+    }
+
     public function current(Request $request)
     {
       $user_id = $request->user()->id;
@@ -32,6 +52,7 @@ class BattleController extends Controller
       //2 - close;
 
       $battle = Battle::where('status', 1)
+        ->where('type', 0)
         ->where('user_id_1', $user_id)
         ->orWhere('status', 1)
         ->where('user_id_2', $user_id)
@@ -65,6 +86,7 @@ class BattleController extends Controller
       //2 - close;
 
       $battle = Battle::where('status', 1)
+        ->where('type', 0)
         ->where('user_id_1', $user_id)
         ->orWhere('status', 1)
         ->where('user_id_2', $user_id)
@@ -396,6 +418,7 @@ class BattleController extends Controller
         $battle = new Battle;
         $battle->user_id_1 = $request->user()->id;
         $battle->started_at = Now();
+        $battle->type = 0;
         if($battle->save()) {
             return new BattleResource($battle);
         }

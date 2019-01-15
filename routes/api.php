@@ -20,12 +20,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('users/self', 'API\UserController@self');
     Route::get('chat/users_online', 'API\ChatController@users_online');
     Route::apiResources(['chat' => 'API\ChatController']);
-    Route::get('fights/current', 'API\FightController@current');
-    Route::post('fights/attack', 'API\FightController@attack');
-    Route::apiResources(['fights' => 'API\FightController']);
     Route::get('battles/current', 'API\BattleController@current');
     Route::post('battles/attack', 'API\BattleController@attack');
     Route::apiResources(['battles' => 'API\BattleController']);
+    Route::apiResources(['pve' => 'API\PveController']);
     Route::get('locations/spawn/{id}', 'API\AreaController@show');
     Route::get('shops/location/{id}', 'API\ShopController@location');
     Route::apiResources(['shops' => 'API\ShopController']);
@@ -36,4 +34,3 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResources(['users' => 'API\UserController']);
 });
 Route::apiResources(['locations' => 'API\LocationController']);
-
