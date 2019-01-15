@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Etc;
+use App\Battle;
 use App\User;
 use App\Item;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Battle as BattleResource;
 
 
 class UserController extends Controller
@@ -149,6 +151,26 @@ class UserController extends Controller
         $item->slot = $slot;
         $item->save();
         return $item;
+    }
+
+    public function in_battle(Request $request)
+    {
+        $user_id = $request->user()->id;
+        //Status battle:
+        //0 - open;
+        //1 - battle;
+        //2 - close;
+        //type battle:
+        //0 - pvp;
+        //1 - pve;
+
+        $battle = Battle::where('status', 1)
+            ->where('user_id_1', $user_id)
+            ->first();
+        
+        if ($battle) {
+            return new BattleResource($battle);
+        }
     }
 
     /**

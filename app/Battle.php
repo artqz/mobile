@@ -16,6 +16,11 @@ class Battle extends Model
     return $this->belongsTo('App\User', 'user_id_2');
   }
 
+  public function npc()
+  {
+    return $this->belongsTo('App\Npc');
+  }
+
   public function rounds()
   {
     return $this->hasMany('App\Round');

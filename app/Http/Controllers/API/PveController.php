@@ -21,6 +21,54 @@ class PveController extends Controller
         //
     }
 
+    public function current(Request $request)
+    {
+        $user_id = $request->user()->id;
+
+        //Status battle:
+        //0 - open;
+        //1 - battle;
+        //2 - close;
+
+        $battle = Battle::where('status', 1)
+            ->where('type', 1)
+            ->where('user_id_1', $user_id)
+            ->first();
+
+        if($battle) {
+            $user = $battle->user1;
+
+            $user_last_round = $battle
+                ->rounds
+                ->where('round', $battle->round)
+                ->where('user_id_1', $user->id);
+
+            if ($user_last_round->count() < 1) {
+                return new BattleResource($battle);
+            }
+            else {
+                return null;
+            }
+        }
+        else return null;
+    }
+
+    public function attack (Request $request)
+    {
+        $user_id = $request->user()->id;
+
+        //Status battle:
+        //0 - open;
+        //1 - battle;
+        //2 - close;
+
+        $battle = Battle::where('status', 1)
+            ->where('type', 1)
+            ->where('user_id_1', $user_id)
+            ->first();
+        return new BattleResource($battle);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -40,6 +88,8 @@ class PveController extends Controller
         $battle->npc_id = $npc_id;
         $battle->started_at = Now();
         $battle->type = 1;
+        $battle->status = 1;
+
         if($battle->save()) {
             $user = $battle->user1;
             $user->in_battle = 1;

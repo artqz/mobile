@@ -17,14 +17,16 @@ class CreateNpcsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('name_ru');
+            $table->integer('level')->default(1);
             //Stats
             $table->integer('p_atk')->default(1);
             $table->integer('p_def')->default(1);
             $table->integer('m_atk')->default(1);
             $table->integer('m_def')->default(1);
-            $table->integer('hp')->default(60);
+            $table->integer('hp_max')->default(1);
+            $table->integer('hp_current')->default(1);
             //
-            $table->string('avatar')->default('/npc/default.png');
+            $table->string('avatar')->default('default.png');
             $table->timestamps();
         });
     }

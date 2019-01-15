@@ -23,11 +23,14 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('battles/current', 'API\BattleController@current');
     Route::post('battles/attack', 'API\BattleController@attack');
     Route::apiResources(['battles' => 'API\BattleController']);
+    Route::post('pve/attack', 'API\PveController@attack');
+    Route::get('pve/current', 'API\PveController@current');
     Route::apiResources(['pve' => 'API\PveController']);
     Route::get('locations/spawn/{id}', 'API\AreaController@show');
     Route::get('shops/location/{id}', 'API\ShopController@location');
     Route::apiResources(['shops' => 'API\ShopController']);
     Route::apiResources(['items' => 'API\ItemController']);
+    Route::get('users/in_battle', 'API\UserController@in_battle');
     Route::get('users/equip_item/{id}', 'API\UserController@equip_item');
     Route::get('users/remove_item/{id}', 'API\UserController@remove_item');
     Route::get('users/get_gold', 'API\UserController@get_gold');

@@ -13,9 +13,9 @@ class NpcsTableSeeder extends Seeder
     public function run()
     {
         $npcs = [
-            ['name' => 'Rabbit', 'name_ru' => 'Кролик', 'p_def' => 70, 'p_atk' => 12, 'hp' => 50],
-            ['name' => 'Wolf', 'name_ru' => 'Волк', 'p_def' => 80, 'p_atk' => 22, 'hp' => 70],
-            ['name' => 'Orc', 'name_ru' => 'Орк', 'p_def' => 80, 'p_atk' => 22, 'hp' => 100],
+            ['name' => 'Rabbit', 'name_ru' => 'Кролик', 'level' => 1, 'p_def' => 70, 'p_atk' => 12, 'hp_max' => 50, 'hp_current' => 50],
+            ['name' => 'Wolf', 'name_ru' => 'Волк', 'level' => 2, 'p_def' => 80, 'p_atk' => 22, 'hp_max' => 70, 'hp_current' => 70],
+            ['name' => 'Orc', 'name_ru' => 'Орк', 'level' => 3, 'p_def' => 80, 'p_atk' => 22, 'hp_max' => 100, 'hp_current' => 100],
         ];
 
         foreach($npcs as $npc){
